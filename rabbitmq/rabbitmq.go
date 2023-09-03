@@ -8,7 +8,7 @@ import (
 )
 
 // url格式：amqp://用户名:密码@rabbitmq服务器地址:端口号/vhost
-const MQURL = "amqp://zwxuser:zwxuser@127.0.0.1:15672/zwx"
+const MQURL = "amqp://zwxuser:zwxuser@127.0.0.1:5672/zwx"
 
 // 1.创建结构体
 type RabbitMQ struct {
@@ -82,4 +82,45 @@ func (r *RabbitMQ) PublishSimple(message string) {
 			ContentType: "text/plain",
 			Body:        []byte(message),
 		})
+}
+
+// 简单模式下消费代码
+func (r *RabbitMQ) ConsumeSimple() {
+	// 通道申请队列
+	_, err := r.channel.QueueDeclare(
+		r.QueueName,
+		false, // 是否持久化
+		false,
+		false, //是否具有排他性
+		false, // 是否堵塞
+		nil,   // 额外属性
+	)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// 在队列中进行消费
+	msgs, err := r.channel.Consume(
+		r.QueueName,
+		"",    //用来区分多个消费者
+		true,  // 是否自动应答
+		false, // 是否具有排他性
+		false, // 若设置为true，则可在相同的connection中发送消息给这个消费者
+		false, //是否阻塞
+		nil,
+	)
+	if err != nil {
+		fmt.Println(err)
+	}
+	// 处理队列消息
+	exit := make(chan bool)
+	go func() {
+		// 循环执行消息
+		for d := range msgs {
+			fmt.Printf("Received a message: %s", d.Body)
+		}
+	}()
+	// 退出清执行ctrl+c
+	log.Printf("[*] Waiting for messages,Please To exit press Ctrl + c")
+	<-exit
 }
