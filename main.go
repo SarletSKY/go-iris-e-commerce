@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/SarletSKY/go-iris-e-commerce/web/controllers"
-	"github.com/kataras/iris"
-	"github.com/kataras/iris/mvc"
+	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/mvc"
 )
 
 func main() {

@@ -3,7 +3,7 @@ package controllers
 import (
 	"github.com/SarletSKY/go-iris-e-commerce/repositories"
 	"github.com/SarletSKY/go-iris-e-commerce/services"
-	"github.com/kataras/iris/mvc"
+	"github.com/kataras/iris/v12/mvc"
 )
 
 type MovieController struct {
