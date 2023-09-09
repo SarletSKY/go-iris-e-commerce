@@ -100,6 +100,7 @@ func (r *RabbitMQ) ConsumeSimple() {
 	}
 
 	// 在队列中进行消费
+
 	msgs, err := r.channel.Consume(
 		r.QueueName,
 		"",    //用来区分多个消费者

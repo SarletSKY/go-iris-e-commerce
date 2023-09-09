@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/SarletSKY/go-iris-e-commerce/rabbitmq"
 )
 
